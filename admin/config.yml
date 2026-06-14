@@ -1,11 +1,12 @@
 backend:
-  name: git-gateway
+  name: github
+  repo: majidtirdad/majidtirdadsite
   branch: main
+  base_url: https://tirdadads.vercel.app
+  auth_endpoint: api/auth
 
 media_folder: "static/uploads"
 public_folder: "/static/uploads"
-
-locale: fa
 
 collections:
   - name: "projects"
@@ -16,7 +17,14 @@ collections:
     delete: true
     slug: "{{slug}}"
     sortable_fields: ["order", "title_en"]
+    summary: "{{title_en}} — {{category_en}}"
     fields:
+      - label: "Order"
+        name: "order"
+        widget: "number"
+        default: 99
+        hint: "Display order — lower number = shown first"
+
       - label: "Title (EN)"
         name: "title_en"
         widget: "string"
@@ -52,15 +60,9 @@ collections:
       - label: "Cover Image"
         name: "cover"
         widget: "image"
-        hint: "Upload cover image for the project card"
+        hint: "Upload project cover image"
 
       - label: "Instagram Reel URL"
         name: "instagram_url"
         widget: "string"
         hint: "https://www.instagram.com/reel/..."
-
-      - label: "Order"
-        name: "order"
-        widget: "number"
-        default: 1
-        hint: "Display order (lower = first)"
