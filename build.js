@@ -1,48 +1,44 @@
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
 
-const projectsDir = path.join(__dirname, '_projects');
-const outputFile  = path.join(__dirname, 'projects.json');
+const dir  = path.join(__dirname, '_projects');
+const out  = path.join(__dirname, 'projects.json');
 
-if (!fs.existsSync(projectsDir)) {
-  console.log('No _projects folder found, writing empty array.');
-  fs.writeFileSync(outputFile, '[]');
+if (!fs.existsSync(dir)) {
+  console.log('No _projects folder — writing empty array');
+  fs.writeFileSync(out, '[]');
   process.exit(0);
 }
 
-function parseFrontmatter(content) {
-  const match = content.match(/^---\n([\s\S]*?)\n---/);
-  if (!match) return {};
+function parseFM(content) {
+  const m = content.match(/^---\n([\s\S]*?)\n---/);
+  if (!m) return {};
   const fm = {};
-  match[1].split('\n').forEach(line => {
-    const idx = line.indexOf(':');
-    if (idx < 0) return;
-    const key = line.slice(0, idx).trim();
-    let val = line.slice(idx + 1).trim();
-    // Remove surrounding quotes
-    val = val.replace(/^["']|["']$/g, '');
-    fm[key] = val;
+  m[1].split('\n').forEach(line => {
+    const i = line.indexOf(':');
+    if (i < 0) return;
+    const k = line.slice(0, i).trim();
+    let v   = line.slice(i + 1).trim().replace(/^["']|["']$/g, '');
+    fm[k]   = v;
   });
   return fm;
 }
 
-const files = fs.readdirSync(projectsDir).filter(f => f.endsWith('.md'));
-
+const files    = fs.readdirSync(dir).filter(f => f.endsWith('.md'));
 const projects = files.map(file => {
-  const content = fs.readFileSync(path.join(projectsDir, file), 'utf8');
-  const fm = parseFrontmatter(content);
+  const fm = parseFM(fs.readFileSync(path.join(dir, file), 'utf8'));
   return {
-    en:      fm.title_en    || '',
-    fa:      fm.title_fa    || '',
-    catEn:   fm.category_en || '',
-    catFa:   fm.category_fa || '',
-    descEn:  fm.description_en || '',
-    descFa:  fm.description_fa || '',
-    lnk:     fm.instagram_url  || '#',
-    img:     fm.cover          || 'portrait.jpg',
-    order:   parseInt(fm.order || '99'),
+    en:     fm.title_en       || '',
+    fa:     fm.title_fa       || '',
+    catEn:  fm.category_en    || '',
+    catFa:  fm.category_fa    || '',
+    descEn: fm.description_en || '',
+    descFa: fm.description_fa || '',
+    lnk:    fm.instagram_url  || '#',
+    img:    fm.cover          || 'portrait.jpg',
+    order:  parseInt(fm.order || '99'),
   };
 }).sort((a, b) => a.order - b.order);
 
-fs.writeFileSync(outputFile, JSON.stringify(projects, null, 2));
-console.log(`✅ Generated projects.json with ${projects.length} projects`);
+fs.writeFileSync(out, JSON.stringify(projects, null, 2));
+console.log(`✅ projects.json → ${projects.length} projects`);

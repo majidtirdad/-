@@ -162,8 +162,9 @@ function parseFrontmatter(md) {
 }
 
 async function loadProjectsFromCMS() {
+  // Try fetching from projects.json first (updated by Decap CMS)
   try {
-    const res = await fetch('/projects.json?v=' + Date.now());
+    const res = await fetch('/projects.json?cb=' + Date.now());
     if (res.ok) {
       const data = await res.json();
       if (Array.isArray(data) && data.length > 0) {
@@ -174,16 +175,86 @@ async function loadProjectsFromCMS() {
     }
   } catch(e) {}
 
-  // Hardcoded fallback
+  // Embedded fallback — always works
   CMS_PROJECTS = [
-    {en:'Sadrazadeh',fa:'صدرازاده',catEn:'Commercial',catFa:'تبلیغاتی',descEn:'A premium brand campaign.',descFa:'یک کمپین برند پریمیوم.',lnk:'https://instagram.com/majidtirdad',img:'portrait.jpg',order:1},
-    {en:'Amol Cable', fa:'کابل آمل',catEn:'Brand Film',catFa:'فیلم برند',descEn:'Industrial storytelling.',descFa:'داستان‌پردازی صنعتی.',lnk:'https://instagram.com/majidtirdad',img:'portrait.jpg',order:2},
-    {en:'Mey Music',  fa:'می موزیک',catEn:'Music Video',catFa:'موزیک ویدیو',descEn:'Cinematic music visuals.',descFa:'ویژوال موزیک سینماتیک.',lnk:'https://instagram.com/majidtirdad',img:'portrait.jpg',order:3},
-    {en:'Cafe Malt',  fa:'کافه مالت',catEn:'Social Content',catFa:'محتوای شبکه اجتماعی',descEn:'Lifestyle & brand identity.',descFa:'لایف‌استایل و هویت برند.',lnk:'https://instagram.com/majidtirdad',img:'portrait.jpg',order:4},
-    {en:'Lamari',     fa:'لاماری',  catEn:'Fashion Film',catFa:'فیلم فشن',descEn:'Elegant fashion visuals.',descFa:'ویژوال‌های زیبای فشن.',lnk:'https://instagram.com/majidtirdad',img:'portrait.jpg',order:5},
-    {en:'Yekta Home', fa:'یکتا هوم',catEn:'Real Estate',catFa:'مسکن',descEn:'Premium property showcase.',descFa:'نمایش ملک پریمیوم.',lnk:'https://instagram.com/majidtirdad',img:'portrait.jpg',order:6},
-    {en:'Irancoton',  fa:'ایران کتون',catEn:'Commercial',catFa:'تبلیغاتی',descEn:'Brand identity campaign.',descFa:'کمپین هویت برند.',lnk:'https://instagram.com/majidtirdad',img:'portrait.jpg',order:7},
-  ];
+  {
+    "en": "Sadrazadeh",
+    "fa": "صدرازاده",
+    "catEn": "Commercial",
+    "catFa": "تبلیغاتی",
+    "descEn": "A premium brand campaign.",
+    "descFa": "یک کمپین برند پریمیوم.",
+    "lnk": "https://instagram.com/majidtirdad",
+    "img": "portrait.jpg",
+    "order": 1
+  },
+  {
+    "en": "Amol Cable",
+    "fa": "کابل آمل",
+    "catEn": "Brand Film",
+    "catFa": "فیلم برند",
+    "descEn": "Industrial storytelling.",
+    "descFa": "داستان‌پردازی صنعتی.",
+    "lnk": "https://instagram.com/majidtirdad",
+    "img": "portrait.jpg",
+    "order": 2
+  },
+  {
+    "en": "Mey Music",
+    "fa": "می موزیک",
+    "catEn": "Music Video",
+    "catFa": "موزیک ویدیو",
+    "descEn": "Cinematic music visuals.",
+    "descFa": "ویژوال موزیک سینماتیک.",
+    "lnk": "https://instagram.com/majidtirdad",
+    "img": "portrait.jpg",
+    "order": 3
+  },
+  {
+    "en": "Cafe Malt",
+    "fa": "کافه مالت",
+    "catEn": "Social Content",
+    "catFa": "محتوای شبکه اجتماعی",
+    "descEn": "Lifestyle & brand identity.",
+    "descFa": "لایف‌استایل و هویت برند.",
+    "lnk": "https://instagram.com/majidtirdad",
+    "img": "portrait.jpg",
+    "order": 4
+  },
+  {
+    "en": "Lamari",
+    "fa": "لاماری",
+    "catEn": "Fashion Film",
+    "catFa": "فیلم فشن",
+    "descEn": "Elegant fashion visuals.",
+    "descFa": "ویژوال‌های زیبای فشن.",
+    "lnk": "https://instagram.com/majidtirdad",
+    "img": "portrait.jpg",
+    "order": 5
+  },
+  {
+    "en": "Yekta Home",
+    "fa": "یکتا هوم",
+    "catEn": "Real Estate",
+    "catFa": "مسکن",
+    "descEn": "Premium property showcase.",
+    "descFa": "نمایش ملک پریمیوم.",
+    "lnk": "https://instagram.com/majidtirdad",
+    "img": "portrait.jpg",
+    "order": 6
+  },
+  {
+    "en": "Irancoton",
+    "fa": "ایران کتون",
+    "catEn": "Commercial",
+    "catFa": "تبلیغاتی",
+    "descEn": "Brand identity campaign.",
+    "descFa": "کمپین هویت برند.",
+    "lnk": "https://instagram.com/majidtirdad",
+    "img": "portrait.jpg",
+    "order": 7
+  }
+];
   renderP();
 }
 
